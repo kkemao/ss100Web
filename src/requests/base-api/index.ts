@@ -117,6 +117,44 @@ class BaseApiClass {
       })
       .then((res) => res.data);
   };
+  getArticleList = () => {
+    return request
+      .get<IListResType<any>>("/api/article/all")
+      .then((res) => res.data);
+  };
+  queryArticleList = (payload: {
+    page: number;
+    pageSize: number;
+    searchText: string;
+    label_id?: number | null;
+    label_children_id?: number | null;
+  }) => {
+    return request
+      .post<IListResType<any>>("/api/article/all", payload)
+      .then((res) => res.data);
+  };
+  addArticle = (payload: any) => {
+    return request
+      .post<IDataResType<any>>("api/article/add", payload)
+      .then((res) => res.data);
+  };
+  updateArticle = (payload: any) => {
+    return request
+      .post<IDataResType<any>>("api/article/update", payload)
+      .then((res) => res.data);
+  };
+  deleteArticle = (id: number) => {
+    return request
+      .get<IListResType<any>>(`/api/article/delete?id=${id}`)
+      .then((res) => res.data);
+  };
+  articleImport = (formdata: any) => {
+    return request
+      .post<IUploadType>(`/api/file/importArticle`, formdata, {
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+      .then((res) => res.data);
+  };
 
   getAllCount = () => {
     return request

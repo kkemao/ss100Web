@@ -17,6 +17,7 @@ import Dashboard from "../../src/secPage/dashboard";
 import User from "../../src/secPage/user";
 import Label from "../../src/secPage/label";
 import Question from "../../src/secPage/question";
+import Article from "../../src/secPage/article";
 import moment from "moment";
 
 const { SubMenu } = Menu;
@@ -166,12 +167,14 @@ function Home(props: Props) {
               padding: 12,
               margin: "16px 0 0 0",
               minHeight: 280,
+              borderRadius: 15,
             }}
           >
             <Route path={"/home/dashboard"} component={Dashboard}></Route>
             <Route path={"/home/user"} component={User}></Route>
             <Route path={"/home/label"} component={Label}></Route>
             <Route path={"/home/question"} component={Question}></Route>
+            <Route path={"/home/article"} component={Article}></Route>
           </Content>
         </Layout>
       </Layout>

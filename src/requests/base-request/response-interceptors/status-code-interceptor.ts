@@ -25,7 +25,11 @@ export const FailStatusCodeInterceptor = (error: any) => {
       return Promise.reject(new Error("认证过期，请重新登录"));
     }
     return Promise.reject(
-      new Error(error.response?.data?.error || "认证过期，请重新登录")
+      new Error(
+        error.response?.data?.error ||
+          error.response?.data?.msg ||
+          "认证过期，请重新登录"
+      )
     );
   }
   return Promise.reject(error);

@@ -1,64 +1,55 @@
 import React, { useEffect, useState } from "react";
 import * as H from "history";
-import {
-  Button,
-  Select,
-  Dropdown,
-  message,
-  Table,
-  Tag,
-  Tabs,
-  Input,
-  Popconfirm,
-  Space,
-  Upload,
-  Spin,
-} from "antd";
+import { Button, Select, message, Input, Spin, Upload, Pagination } from "antd";
 import { BaseApi } from "../../requests/base-api";
-import { showQuestionModal, ModeType } from "./addQuestion";
-import { EQuestionType } from "../../types";
+import { showArticleModal, ModeType } from "./add";
 import { SearchOutlined } from "@ant-design/icons";
+import Card from "./component/card";
 const { Option } = Select;
 
 interface Props {
   history: H.History;
 }
-function Question(props: Props) {
+function Article(props: Props) {
   const { history } = props;
   const [loading, setLoading] = useState(false);
   const [labelList, setLabelList] = useState<any>([]);
   const [labelObject, setLabelObject] = useState<any>({});
-  const [questionList, setQuestionList] = useState<any>([]);
+  const [articleList, setArticleList] = useState<any>([]);
   const [label_id, setLabel_id] = useState<number | null>(null);
   const [label_children_id, setLabel_children_id] = useState<number | null>(
     null
   );
-  const [type, setType] = useState<EQuestionType | null>(null);
   const [total, setTotal] = useState<number | null>(0);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [searchText, setSearchText] = useState("");
+  const [currentId, setCurrentId] = useState(0);
+  const [currentInfo, setCurrentInfo] = useState<any>({});
 
   useEffect(() => {
     getallLabel();
   }, []);
 
   useEffect(() => {
-    getallQuestion();
-  }, [page, pageSize, type, label_id, label_children_id, searchText]);
-  const getallQuestion = async () => {
+    getallArticle();
+  }, [page, pageSize, label_id, label_children_id, searchText]);
+  const getallArticle = async () => {
     try {
-      const res = await BaseApi.queryQuestionList({
+      const res = await BaseApi.queryArticleList({
         page,
         pageSize,
         searchText,
         label_id,
         label_children_id,
-        type,
       });
       let { data, total } = res;
       data = data.map((item, index) => ({ ...item, index: index + 1 }));
-      setQuestionList(data);
+      if (page === 1 && data.length) {
+        setCurrentId(data[0]?.id);
+        setCurrentInfo(data[0]);
+      }
+      setArticleList(data);
       setTotal(total);
     } catch (error) {
       message.error(error.message);
@@ -82,11 +73,11 @@ function Question(props: Props) {
     }
   };
 
-  const deleteQuestion = async (id: number) => {
+  const deleteArticle = async (id: number) => {
     try {
-      const res = await BaseApi.deleteQuestion(id);
+      const res = await BaseApi.deleteArticle(id);
       if (res.statusCode === 200) {
-        getallQuestion();
+        getallArticle();
       }
       message.info(res.msg);
     } catch (error) {
@@ -98,143 +89,31 @@ function Question(props: Props) {
     console.log(key);
   };
 
-  const addOrEditQuestionFun = (param: {
+  const addOrEditArticleFun = (param: {
     mode: ModeType;
-    questionInfo?: any;
+    articleInfo?: any;
     labelList: any;
   }) => {
-    const instance = showQuestionModal({
+    const instance = showArticleModal({
       mode: param.mode,
-      questionInfo: param.questionInfo,
+      articleInfo: param.articleInfo,
       labelList: param.labelList,
       onClose: () => {
         instance.destory();
       },
-      refresh: () => getallQuestion(),
+      refresh: () => getallArticle(),
     });
   };
 
-  const columns = [
-    {
-      title: "编号",
-      dataIndex: "index",
-      key: "index",
-      render: (text: any, record: any) => {
-        return <span>{record.index + (page - 1) * pageSize}</span>;
-      },
-    },
-    {
-      title: "题型",
-      dataIndex: "type",
-      key: "type",
-      render: (text: any, record: any) => {
-        return (
-          <Tag
-            color={
-              record.type === EQuestionType.SINGLESELECT
-                ? "green"
-                : record.type === EQuestionType.TF
-                ? "blue"
-                : "gold"
-            }
-          >
-            {record.type === EQuestionType.SINGLESELECT
-              ? "单选"
-              : record.type === EQuestionType.TF
-              ? "判断"
-              : "多选"}
-          </Tag>
-        );
-      },
-    },
-    {
-      title: "题目",
-      dataIndex: "title",
-      key: "title",
-    },
-    {
-      title: "选项",
-      dataIndex: "options",
-      key: "options",
-    },
-    {
-      title: "答案",
-      key: "answer",
-      dataIndex: "answer",
-    },
-    {
-      title: "来源",
-      key: "origin",
-      dataIndex: "origin",
-    },
-    {
-      title: "解释",
-      key: "description",
-      dataIndex: "description",
-    },
-    {
-      title: "类别",
-      key: "register_time",
-      dataIndex: "register_time",
-      render: (text: any, record: any) => {
-        return <span>{labelObject[record.parent_id]?.name}</span>;
-      },
-    },
-    {
-      title: "子类别",
-      key: "label_id",
-      dataIndex: "label_id",
-      render: (text: any, record: any) => {
-        return <span>{labelObject[record.label_id]?.name}</span>;
-      },
-    },
-    {
-      title: "创建时间",
-      dataIndex: "time",
-      key: "time",
-    },
-    {
-      title: "操作",
-      key: "action",
-      render: (text: any, record: any) => (
-        <Space size="middle">
-          <Button
-            type="link"
-            size="small"
-            onClick={() =>
-              addOrEditQuestionFun({
-                mode: ModeType.MODIFY,
-                labelList: Object.values(labelObject),
-                questionInfo: record,
-              })
-            }
-          >
-            编辑
-          </Button>
-          <Popconfirm
-            title="是否删除?"
-            onConfirm={() => deleteQuestion(record.id)}
-            onCancel={() => {}}
-            okText="确定"
-            cancelText="取消"
-          >
-            <Button type="link" size="small" danger>
-              删除
-            </Button>
-          </Popconfirm>
-        </Space>
-      ),
-    },
-  ];
   const uploadFile = async (file: any) => {
     setLoading(true);
     try {
       let formdata = new FormData();
       formdata.append("file", file);
-      const res = await BaseApi.questionImport(formdata);
-      console.log("zkf", res);
+      const res = await BaseApi.articleImport(formdata);
       if (res && res.msg) {
         message.info(res.msg);
+        getallArticle();
       } else {
         message.error("导入失败");
       }
@@ -251,13 +130,12 @@ function Question(props: Props) {
     setLabel_id(null);
     setLabel_children_id(null);
     setSearchText("");
-    setType(null);
   };
 
   return (
-    <div className="question-secpage-wrap">
+    <div className="article-secpage-wrap">
       <div className="sec-header">
-        <span className="sec-header-title">试题管理</span>
+        <span className="sec-header-title">文章管理</span>
         <div
           style={{
             display: "flex",
@@ -304,17 +182,6 @@ function Question(props: Props) {
                 );
               })}
           </Select>
-          <span style={{ whiteSpace: "nowrap", marginRight: 5 }}>题型:</span>
-          <Select
-            size="small"
-            style={{ width: 70, marginRight: 10, fontSize: 12 }}
-            value={type}
-            onChange={(value) => setType(value)}
-          >
-            <Option value={EQuestionType.SINGLESELECT}>单选题</Option>
-            <Option value={EQuestionType.MULTISELECT}>多选题</Option>
-            <Option value={EQuestionType.TF}>判断题</Option>
-          </Select>
           <Input
             placeholder="输入关键词进行搜索"
             value={searchText}
@@ -334,7 +201,7 @@ function Question(props: Props) {
             icon={<SearchOutlined />}
             size="small"
             style={{ marginRight: 5 }}
-            onClick={() => getallQuestion()}
+            onClick={() => getallArticle()}
           >
             筛选
           </Button>
@@ -342,13 +209,13 @@ function Question(props: Props) {
             type="primary"
             size="small"
             onClick={() =>
-              addOrEditQuestionFun({
+              addOrEditArticleFun({
                 mode: ModeType.CREATE,
                 labelList: Object.values(labelObject),
               })
             }
           >
-            添加试题
+            添加文章
           </Button>
           <Upload
             name="logo"
@@ -365,22 +232,38 @@ function Question(props: Props) {
         </div>
       </div>
       <div className="secpage-content">
-        <Table
-          columns={columns}
-          dataSource={questionList}
-          pagination={{
-            total: total || 0,
-            current: page,
-            showTotal: (total, range) => <span>共{total}条</span>,
-            pageSize,
-            pageSizeOptions: [10, 15, 20, 30, 50],
-            onChange: (page, pageSize) => setPage(page),
-            onShowSizeChange: (current, size) => {
-              setPageSize(size);
-              setPage(1);
-            },
-          }}
-        />
+        <div className="content-list">
+          <h5 className="title">列表</h5>
+          <div className="list-wrap">
+            {articleList.map((item: any) => (
+              <Card
+                info={item}
+                onClick={() => {
+                  console.log("zkf-console");
+                  setCurrentId(item.id);
+                  setCurrentInfo(item);
+                }}
+              />
+            ))}
+          </div>
+          <div className="pagination-div">
+            <span style={{ fontSize: 12, marginRight: 5 }}>共{total}条</span>
+            <span style={{ fontSize: 12, marginRight: 5 }}>
+              每页{pageSize}条
+            </span>
+            <Pagination
+              simple
+              current={page}
+              pageSize={10}
+              total={total || 0}
+              onChange={(page) => setPage(page)}
+            />
+          </div>
+        </div>
+        <div className="content-info">
+          <h5 className="title">详情</h5>
+          <div className="info-wrap">{JSON.stringify(currentInfo)}</div>
+        </div>
       </div>
       <div
         className="article-loading"
@@ -392,4 +275,4 @@ function Question(props: Props) {
   );
 }
 
-export default Question;
+export default Article;
