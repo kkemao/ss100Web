@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="13px" height="22px" viewBox="0 0 13 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 64 (93537) - https://sketch.com -->
+    <title>箭头</title>
+    <desc>Created with Sketch.</desc>
+    <g id="官网页面" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="首页" transform="translate(-1108.000000, -4494.000000)">
+            <rect fill="#000000" x="0" y="0" width="1920" height="5692"></rect>
+            <rect id="矩形" fill="#101010" x="0" y="4235" width="1920" height="538"></rect>
+            <g id="编组-7" transform="translate(791.000000, 4480.000000)" fill-rule="nonzero">
+                <g id="箭头" transform="translate(309.000000, 10.000000)">
+                    <rect id="矩形" fill="#000000" opacity="0" x="0" y="0" width="30" height="30"></rect>
+                    <polygon id="路径" fill="#2996FF" points="10.1861426 4.22425781 8.64041016 5.75466797 17.8375195 15.0148828 8.56306641 24.1971094 10.0957031 25.7402637 20.9156836 15.0274805"></polygon>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

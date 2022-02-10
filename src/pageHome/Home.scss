@@ -1,0 +1,14 @@
+.custom-style {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 25px;
+  .logo {
+    color: white;
+    font-size: 24px;
+  }
+  .user-box {
+    color: white;
+    font-size: 20px;
+  }
+}

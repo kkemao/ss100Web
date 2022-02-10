@@ -1,0 +1,78 @@
+.Main-container {
+  overflow: auto;
+  display: flex;
+  flex: 1 0 auto;
+  height: 100%;
+  touch-action: none;
+}
+.Banner-container {
+  flex: 1 0 auto;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: #000;
+  background-origin: content-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.banner-box {
+  display: flex;
+  flex-direction: column;
+  /* margin-left: 17%; */
+  /* height: 50%; */
+  background: rgba(0, 0, 0, 0.7);
+  width: 40vw;
+  min-width: 375px;
+  max-width: 500px;
+  height: 40vh;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 3vh;
+}
+.banner-title {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 2vh 0;
+  font-size: 32px;
+  letter-spacing: 2px;
+  color: white;
+  margin-bottom: 10px;
+}
+.banner-content {
+  font-family: PingFangSC-Regular;
+  font-size: 20px;
+  color: #ffffff;
+  letter-spacing: 1px;
+  line-height: 48px;
+}
+.button-style {
+  background-color: #0071ff;
+  border-color: #0071ff;
+  width: 150px;
+  margin-top: 45px;
+  font-family: PingFangSC-Regular;
+  font-size: 14px;
+  color: #ffffff;
+  letter-spacing: 1.25px;
+}
+.banner-mouse {
+  width: 50px;
+  height: 50px;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: absolute;
+  left: calc(50% - 25px);
+  bottom: 42px;
+  animation: mouseMove 4s infinite;
+}
+.center-right {
+  background-size: auto;
+  background-position: 85% 60%;
+}

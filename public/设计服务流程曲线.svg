@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="875px" height="624px" viewBox="0 0 875 624" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 64 (93537) - https://sketch.com -->
+    <title>设计服务流程曲线</title>
+    <desc>Created with Sketch.</desc>
+    <g id="官网页面" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="业务-设计" transform="translate(-524.000000, -3574.000000)" fill-rule="nonzero" stroke="#DAB475" stroke-width="3">
+            <g id="编组-3" transform="translate(524.000000, 3574.000000)">
+                <path d="M121,2 C503.817001,2.66666667 711.55695,3 744.219848,3 C767.64367,3 559.90372,2.66666667 121,2 Z" id="路径-2" transform="translate(433.500000, 2.500000) scale(1, -1) translate(-433.500000, -2.500000) "></path>
+                <path d="M116,312 C498.817001,312.666667 706.55695,313 739.219848,313 C762.64367,313 554.90372,312.666667 116,312 Z" id="路径-2" transform="translate(428.500000, 312.500000) scale(1, -1) translate(-428.500000, -312.500000) "></path>
+                <path d="M741,312 C804.339391,312 873,242.604136 873,157 C873,71.3958638 807,2 741,2" id="椭圆形"></path>
+                <path d="M134,621 C516.817001,621.666667 724.55695,622 757.219848,622 C780.64367,622 572.90372,621.666667 134,621 Z" id="路径-2" transform="translate(446.500000, 621.500000) scale(1, -1) translate(-446.500000, -621.500000) "></path>
+                <path d="M2,622 C65.3393911,622 134,552.604136 134,467 C134,381.395864 68,312 2,312" id="椭圆形" transform="translate(68.000000, 467.000000) scale(-1, 1) translate(-68.000000, -467.000000) "></path>
+            </g>
+        </g>
+    </g>
+</svg>
