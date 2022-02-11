@@ -94,7 +94,11 @@ function Label(props: Props) {
       </div>
       <div className="secpage-content">
         {labelList.length ? (
-          <Collapse defaultActiveKey={[labelList[0]?.id]} onChange={callback}>
+          <Collapse
+            defaultActiveKey={[labelList[0]?.id]}
+            className="collapse-box"
+            onChange={callback}
+          >
             {labelList.map((label: any) => (
               <Panel
                 header={

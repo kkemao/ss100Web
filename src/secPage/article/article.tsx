@@ -1,10 +1,21 @@
 import React, { useEffect, useState } from "react";
 import * as H from "history";
-import { Button, Select, message, Input, Spin, Upload, Pagination } from "antd";
+import {
+  Button,
+  Select,
+  message,
+  Input,
+  Spin,
+  Upload,
+  Pagination,
+  Popconfirm,
+  Empty,
+} from "antd";
 import { BaseApi } from "../../requests/base-api";
 import { showArticleModal, ModeType } from "./add";
 import { SearchOutlined } from "@ant-design/icons";
 import Card from "./component/card";
+import { imageAddPrefix } from "../../utils";
 const { Option } = Select;
 
 interface Props {
@@ -26,6 +37,7 @@ function Article(props: Props) {
   const [searchText, setSearchText] = useState("");
   const [currentId, setCurrentId] = useState(0);
   const [currentInfo, setCurrentInfo] = useState<any>({});
+  const [currentInfoContent, setCurrentInfoContent] = useState<any>([]);
 
   useEffect(() => {
     getallLabel();
@@ -45,14 +57,32 @@ function Article(props: Props) {
       });
       let { data, total } = res;
       data = data.map((item, index) => ({ ...item, index: index + 1 }));
+      if (!data.length) {
+        setCurrentFun();
+      }
       if (page === 1 && data.length) {
-        setCurrentId(data[0]?.id);
-        setCurrentInfo(data[0]);
+        setCurrentFun(data[0]);
       }
       setArticleList(data);
       setTotal(total);
     } catch (error) {
       message.error(error.message);
+    }
+  };
+  const setCurrentFun = (info?: any) => {
+    if (!info) {
+      setCurrentId(0);
+      setCurrentInfo({});
+      setCurrentInfoContent([]);
+      return;
+    }
+    setCurrentId(info.id);
+    setCurrentInfo(info);
+    try {
+      const arr = JSON.parse(info.content);
+      setCurrentInfoContent(arr);
+    } catch (error) {
+      setCurrentInfoContent([{ type: 2, content: error.message }]);
     }
   };
   const getallLabel = async () => {
@@ -235,16 +265,19 @@ function Article(props: Props) {
         <div className="content-list">
           <h5 className="title">列表</h5>
           <div className="list-wrap">
-            {articleList.map((item: any) => (
-              <Card
-                info={item}
-                onClick={() => {
-                  console.log("zkf-console");
-                  setCurrentId(item.id);
-                  setCurrentInfo(item);
-                }}
-              />
-            ))}
+            {articleList.length ? (
+              articleList.map((item: any) => (
+                <Card
+                  active={item.id === currentId}
+                  info={item}
+                  onClick={() => {
+                    setCurrentFun(item);
+                  }}
+                />
+              ))
+            ) : (
+              <Empty style={{ marginTop: "10vh" }} />
+            )}
           </div>
           <div className="pagination-div">
             <span style={{ fontSize: 12, marginRight: 5 }}>共{total}条</span>
@@ -260,9 +293,76 @@ function Article(props: Props) {
             />
           </div>
         </div>
-        <div className="content-info">
-          <h5 className="title">详情</h5>
-          <div className="info-wrap">{JSON.stringify(currentInfo)}</div>
+        <div
+          className="content-info"
+          style={{ display: currentInfo.id ? "" : "none" }}
+        >
+          <div className="title">
+            <div>
+              <span style={{ fontSize: 16, marginRight: 10 }}>
+                {currentInfo.title}
+              </span>
+            </div>
+            <div className="edit-tool">
+              <Button
+                type="link"
+                onClick={() => {
+                  addOrEditArticleFun({
+                    mode: ModeType.MODIFY,
+                    labelList: Object.values(labelObject),
+                    articleInfo: currentInfo,
+                  });
+                }}
+              >
+                编辑
+              </Button>
+              <Popconfirm
+                title="是否删除?"
+                onConfirm={() => deleteArticle(currentInfo.id)}
+                onCancel={() => {}}
+                okText="确定"
+                cancelText="取消"
+              >
+                <Button type="link" size="small" danger>
+                  删除
+                </Button>
+              </Popconfirm>
+            </div>
+          </div>
+          <div className="label-box">
+            {currentInfo.auth ? <span className="label-tag">原创</span> : ""}
+            <span style={{ margin: "0 10px" }}>{currentInfo.create_time}</span>
+            <span className="label-content">
+              {labelObject[currentInfo.parent_id]?.name}
+            </span>{" "}
+            -
+            <span className="label-content">
+              {labelObject[currentInfo.label_id]?.name}
+            </span>
+            <span
+              style={{ marginLeft: 15, fontWeight: "normal", color: "gray" }}
+            >
+              作者：{currentInfo.auth}
+            </span>
+          </div>
+          <div className="info-wrap">
+            {currentInfo &&
+              currentInfoContent.map((item: any) => {
+                return (
+                  <p className="info-section-text">
+                    {item.type === 1 ? (
+                      <img
+                        alt="图片"
+                        src={imageAddPrefix(item.content || "")}
+                        className="info-section-img"
+                      />
+                    ) : (
+                      <p className="text-box">{item.content}</p>
+                    )}
+                  </p>
+                );
+              })}
+          </div>
         </div>
       </div>
       <div

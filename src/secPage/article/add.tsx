@@ -17,6 +17,7 @@ import { EQStatus } from "../../types";
 import { FormInstance } from "antd/es/form";
 import { UploadOutlined, DeleteOutlined } from "@ant-design/icons";
 import moment from "moment";
+import { imageAddPrefix } from "../../utils";
 
 const { Option } = Select;
 export enum ModeType {
@@ -44,9 +45,12 @@ function AddArticle({
 
   useEffect(() => {
     if (mode === ModeType.MODIFY) {
-      console.log("zkf", articleInfo);
-      formRef.current!.setFieldsValue(articleInfo);
-      setInfo(articleInfo);
+      const _info = {
+        ...articleInfo,
+        content: JSON.parse(articleInfo.content),
+      };
+      formRef.current!.setFieldsValue(_info);
+      setInfo(_info);
     }
   }, []);
   const handleOk = () => {};
@@ -62,7 +66,6 @@ function AddArticle({
         imageUrl: "",
         time: moment().format("YYYY-MM-DD HH:mm:ss"),
       });
-      console.log("zkf", res);
       if (res.statusCode === 200) {
         refresh();
       }
@@ -76,7 +79,8 @@ function AddArticle({
 
   const editArticle = async () => {
     try {
-      const res = await BaseApi.updateArticle(info);
+      const _i = { ...info, content: JSON.stringify(info.content) };
+      const res = await BaseApi.updateArticle(_i);
       if (res.statusCode === 200) {
         refresh();
       }
@@ -128,7 +132,7 @@ function AddArticle({
     <Modal
       title={`${mode === ModeType.CREATE ? "新增" : "编辑"}文章`}
       visible={visible}
-      width={600}
+      width={800}
       onOk={handleOk}
       onCancel={handleCancel}
       okText="确定"
@@ -156,25 +160,63 @@ function AddArticle({
           />
         </Form.Item>
         <Form.Item
-          label="答案"
-          name="answer"
-          rules={[{ required: true, message: "答案不能为空!" }]}
+          label="作者"
+          name="auth"
+          rules={[{ required: false, message: "" }]}
         >
           <Input
-            value={info.answer}
-            onChange={(e) => setInfo({ ...info, answer: e.target.value })}
+            value={info.auto}
+            onChange={(e) => setInfo({ ...info, auto: e.target.value })}
           />
         </Form.Item>
         <Form.Item
-          label="解释"
-          name="description"
-          rules={[{ required: true, message: "解释不能为空!" }]}
+          label="简述"
+          name="sketch"
+          rules={[{ required: true, message: "答案不能为空!" }]}
         >
           <TextArea
-            rows={4}
-            value={info.description}
-            onChange={(e) => setInfo({ ...info, description: e.target.value })}
+            rows={2}
+            value={info.sketch}
+            onChange={(e) => setInfo({ ...info, sketch: e.target.value })}
           />
+        </Form.Item>
+        <Form.Item name="cover" label="封面" rules={[{ required: false }]}>
+          {info.cover ? (
+            <h5
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                width: "100%",
+              }}
+            >
+              {/* <a style={{ width: "80%" }}>{info.cover}</a> */}
+              <img
+                style={{ maxWidth: 200, maxHeight: 100 }}
+                src={imageAddPrefix(info.cover || "")}
+              />
+              <Button
+                icon={<DeleteOutlined />}
+                type="link"
+                onClick={() => {
+                  setInfo({ ...info, cover: null });
+                }}
+              >
+                删除
+              </Button>
+            </h5>
+          ) : (
+            <Upload
+              name="logo"
+              listType="picture"
+              beforeUpload={(file) => {
+                uploadFile(file);
+                return false;
+              }}
+            >
+              <Button icon={<UploadOutlined />}>点击选择文件</Button>
+            </Upload>
+          )}
         </Form.Item>
         <Form.Item
           label="类别"
@@ -226,49 +268,6 @@ function AddArticle({
               })}
           </Select>
         </Form.Item>
-        <Form.Item name="cover" label="配图" rules={[{ required: false }]}>
-          {info.cover ? (
-            <h5
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              <a>{info.cover}</a>
-              <Button
-                icon={<DeleteOutlined />}
-                type="link"
-                onClick={() => {
-                  setInfo({ ...info, cover: null });
-                }}
-              >
-                删除
-              </Button>
-            </h5>
-          ) : (
-            <Upload
-              name="logo"
-              listType="picture"
-              beforeUpload={(file) => {
-                uploadFile(file);
-                return false;
-              }}
-            >
-              <Button icon={<UploadOutlined />}>点击选择文件</Button>
-            </Upload>
-          )}
-        </Form.Item>
-        <Form.Item
-          label="来源"
-          name="origin"
-          rules={[{ required: false, message: "" }]}
-        >
-          <Input
-            value={info.origin}
-            onChange={(e) => setInfo({ ...info, origin: e.target.value })}
-          />
-        </Form.Item>
         <Form.Item
           label="状态"
           name="status"
@@ -281,6 +280,17 @@ function AddArticle({
             <Radio value={EQStatus.ONLINE}>在线</Radio>
             <Radio value={EQStatus.OFFLINE}>下架</Radio>
           </Radio.Group>
+        </Form.Item>
+        <Form.Item
+          label="备注"
+          name="description"
+          rules={[{ required: true, message: "备注不能为空!" }]}
+        >
+          <TextArea
+            rows={4}
+            value={info.description}
+            onChange={(e) => setInfo({ ...info, description: e.target.value })}
+          />
         </Form.Item>
         <div className="article-form">
           <Button

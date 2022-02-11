@@ -9,7 +9,8 @@ export const request = axios.create({
   timeout: timeout,
   // withCredentials: true,
 });
-request.defaults.baseURL = "http://localhost:9998";
+request.defaults.baseURL =
+  window.systemConfig.baseUrl || "http://localhost:9998";
 request.defaults.headers.common = {};
 export const CancelToken = axios.CancelToken;
 export const isCancel = axios.isCancel;

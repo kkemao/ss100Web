@@ -17,6 +17,7 @@ import { EQuestionType, EQStatus } from "../../types";
 import { FormInstance } from "antd/es/form";
 import { UploadOutlined, DeleteOutlined } from "@ant-design/icons";
 import moment from "moment";
+import { imageAddPrefix } from "../../utils";
 
 const { Option } = Select;
 export enum ModeType {
@@ -263,9 +264,14 @@ function AddQuestion({
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-between",
+                width: "100%",
               }}
             >
-              <a>{info.cover}</a>
+              {/* <a style={{ width: "80%" }}>{info.cover}</a> */}
+              <img
+                style={{ maxWidth: 200, maxHeight: 100 }}
+                src={imageAddPrefix(info.cover || "")}
+              />
               <Button
                 icon={<DeleteOutlined />}
                 type="link"
