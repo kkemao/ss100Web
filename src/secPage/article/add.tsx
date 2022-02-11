@@ -15,7 +15,14 @@ import { BaseApi } from "../../requests/base-api";
 import TextArea from "antd/lib/input/TextArea";
 import { EQStatus } from "../../types";
 import { FormInstance } from "antd/es/form";
-import { UploadOutlined, DeleteOutlined } from "@ant-design/icons";
+import {
+  UploadOutlined,
+  DeleteOutlined,
+  ArrowUpOutlined,
+  ArrowDownOutlined,
+  PictureOutlined,
+  FileWordOutlined,
+} from "@ant-design/icons";
 import moment from "moment";
 import { imageAddPrefix } from "../../utils";
 
@@ -132,12 +139,13 @@ function AddArticle({
     <Modal
       title={`${mode === ModeType.CREATE ? "新增" : "编辑"}文章`}
       visible={visible}
-      width={800}
+      width={900}
       onOk={handleOk}
       onCancel={handleCancel}
       okText="确定"
       cancelText="取消"
       footer={null}
+      maskClosable={false}
     >
       <Form
         name="basic"
@@ -217,6 +225,75 @@ function AddArticle({
               <Button icon={<UploadOutlined />}>点击选择文件</Button>
             </Upload>
           )}
+        </Form.Item>
+        <Form.Item
+          label="内容"
+          name="content"
+          rules={[{ required: true, message: "所属内容不能为空!" }]}
+        >
+          <div
+            style={{
+              background: "whitesmoke",
+              padding: 5,
+              borderRadius: 5,
+            }}
+          >
+            {info?.content?.map((item: any, index: number) => {
+              return (
+                <div
+                  key={index + item.type + new Date().getTime()}
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    margin: "5px 0",
+                  }}
+                >
+                  {item.type === 1 ? (
+                    <img
+                      alt=""
+                      style={{ maxWidth: 400, maxHeight: 200 }}
+                      src={imageAddPrefix(item.content || "")}
+                    />
+                  ) : (
+                    <TextArea
+                      rows={2}
+                      value={item.content}
+                      style={{ maxWidth: "75%" }}
+                    />
+                  )}
+                  <span>
+                    <Button type="link" icon={<ArrowUpOutlined />} />
+                    <Button type="link" icon={<ArrowDownOutlined />} />
+                    <Button type="link" icon={<DeleteOutlined />} />
+                  </span>
+                </div>
+              );
+            })}
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+                background: "#e1e1e1",
+                padding: 5,
+                borderRadius: 5,
+              }}
+            >
+              <Button type="link" icon={<FileWordOutlined />}>
+                增加文字
+              </Button>
+              <Button
+                style={{ marginLeft: 10 }}
+                type="link"
+                icon={<PictureOutlined />}
+              >
+                增加图片
+              </Button>
+            </div>
+          </div>
         </Form.Item>
         <Form.Item
           label="类别"

@@ -137,6 +137,7 @@ function AddQuestion({
       okText="确定"
       cancelText="取消"
       footer={null}
+      maskClosable={false}
     >
       <Form
         name="basic"
