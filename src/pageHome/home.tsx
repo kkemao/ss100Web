@@ -138,8 +138,7 @@ function Home(props: Props) {
             }
           >
             <a
-              className="ant-dropdown-link"
-              style={{ color: "#b3c0cb" }}
+              className="ant-dropdown-link account-text"
               onClick={(e) => e.preventDefault()}
             >
               {userInfo.username || "--"} <DownOutlined />
