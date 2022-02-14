@@ -10,7 +10,7 @@ function Home(props: Props) {
   return (
     <div className="login-wrap">
       <Login
-        title="数商100 - 后台管理系统"
+        title={window.systemConfig.systemName || "数商100 - 后台管理系统"}
         content=""
         bannerImg="homebanner.png"
       />

@@ -107,7 +107,9 @@ function Home(props: Props) {
   return (
     <Layout style={{ height: "100%" }}>
       <Header className="header custom-style">
-        <div className="logo">数商100 - 后台管理系统</div>
+        <div className="logo">
+          {window.systemConfig.systemName || "数商100 - 后台管理系统"}
+        </div>
         <div className="user-box">
           <span style={{ fontSize: 14, marginRight: 15 }}>{date}</span>
           <img
