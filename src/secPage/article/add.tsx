@@ -70,6 +70,7 @@ function AddArticle({
     try {
       const res = await BaseApi.addArticle({
         ...info,
+        content: JSON.stringify(info.content),
         imageUrl: "",
         time: moment().format("YYYY-MM-DD HH:mm:ss"),
       });
@@ -121,19 +122,50 @@ function AddArticle({
     }
     return e && e.fileList;
   };
-  const uploadFile = async (file: any) => {
+  const uploadFile = async (file: any, isCover: boolean) => {
     try {
       let formdata = new FormData();
       formdata.append("file", file);
       const res = await BaseApi.uploadFile(formdata);
       console.log("zkf", res);
       if (res.statusCode === 200) {
-        setInfo({ ...info, cover: res.url });
-        formRef.current!.setFieldsValue({
-          cover: res.url,
-        });
+        if (isCover) {
+          setInfo({ ...info, cover: res.url });
+          formRef.current!.setFieldsValue({
+            cover: res.url,
+          });
+        } else {
+          const content = info.content || [];
+          content.push({ type: 1, content: res.url });
+          setInfo({ ...info, content });
+        }
       }
     } catch (error) {}
+  };
+  const controlSort = (
+    index: number,
+    d: "up" | "down" | "del" | "edit",
+    value?: string
+  ) => {
+    const { content } = info;
+    if (d === "del" && content.length <= 1) {
+      message.info("内容不能为空，请至少保留一条.");
+      return;
+    }
+    if (d === "up") {
+      const item = content[index];
+      content[index] = content[index - 1];
+      content[index - 1] = item;
+    } else if (d === "down") {
+      const item = content[index];
+      content[index] = content[index + 1];
+      content[index + 1] = item;
+    } else if (d === "del") {
+      content.splice(index, 1);
+    } else if (d === "edit") {
+      content[index].content = value;
+    }
+    setInfo({ ...info, content: content });
   };
   return (
     <Modal
@@ -174,7 +206,7 @@ function AddArticle({
         >
           <Input
             value={info.auto}
-            onChange={(e) => setInfo({ ...info, auto: e.target.value })}
+            onChange={(e) => setInfo({ ...info, auth: e.target.value })}
           />
         </Form.Item>
         <Form.Item
@@ -218,7 +250,7 @@ function AddArticle({
               name="logo"
               listType="picture"
               beforeUpload={(file) => {
-                uploadFile(file);
+                uploadFile(file, true);
                 return false;
               }}
             >
@@ -233,7 +265,7 @@ function AddArticle({
         >
           <div
             style={{
-              background: "whitesmoke",
+              // background: "whitesmoke",
               padding: 5,
               borderRadius: 5,
             }}
@@ -241,13 +273,15 @@ function AddArticle({
             {info?.content?.map((item: any, index: number) => {
               return (
                 <div
-                  key={index + item.type + new Date().getTime()}
+                  key={index}
                   style={{
                     display: "flex",
                     flexDirection: "row",
                     alignItems: "center",
                     justifyContent: "space-between",
                     margin: "5px 0",
+                    background: "#fdfbfb",
+                    borderRadius: 5,
                   }}
                 >
                   {item.type === 1 ? (
@@ -261,12 +295,38 @@ function AddArticle({
                       rows={2}
                       value={item.content}
                       style={{ maxWidth: "75%" }}
+                      onChange={(e) =>
+                        controlSort(index, "edit", e.target.value)
+                      }
                     />
                   )}
                   <span>
-                    <Button type="link" icon={<ArrowUpOutlined />} />
-                    <Button type="link" icon={<ArrowDownOutlined />} />
-                    <Button type="link" icon={<DeleteOutlined />} />
+                    {index === 0 ? (
+                      ""
+                    ) : (
+                      <Button
+                        type="link"
+                        title="向上移动"
+                        icon={<ArrowUpOutlined />}
+                        onClick={() => controlSort(index, "up")}
+                      />
+                    )}
+                    {index === info.content.length - 1 ? (
+                      ""
+                    ) : (
+                      <Button
+                        type="link"
+                        title="向下移动"
+                        icon={<ArrowDownOutlined />}
+                        onClick={() => controlSort(index, "down")}
+                      />
+                    )}
+                    <Button
+                      type="link"
+                      title="删除"
+                      icon={<DeleteOutlined />}
+                      onClick={() => controlSort(index, "del")}
+                    />
                   </span>
                 </div>
               );
@@ -277,21 +337,39 @@ function AddArticle({
                 flexDirection: "row",
                 alignItems: "center",
                 justifyContent: "center",
-                background: "#e1e1e1",
+                background: "rgb(251,251,251)",
                 padding: 5,
                 borderRadius: 5,
               }}
             >
-              <Button type="link" icon={<FileWordOutlined />}>
-                增加文字
-              </Button>
               <Button
-                style={{ marginLeft: 10 }}
                 type="link"
-                icon={<PictureOutlined />}
+                icon={<FileWordOutlined />}
+                onClick={() => {
+                  const content = info.content || [];
+                  content.push({ type: 2, content: "" });
+                  setInfo({ ...info, content });
+                }}
               >
-                增加图片
+                插入段落
               </Button>
+              <Upload
+                name="logo"
+                listType="picture"
+                showUploadList={false}
+                beforeUpload={(file) => {
+                  uploadFile(file, false);
+                  return false;
+                }}
+              >
+                <Button
+                  style={{ marginLeft: 10 }}
+                  type="link"
+                  icon={<PictureOutlined />}
+                >
+                  插入图片
+                </Button>
+              </Upload>
             </div>
           </div>
         </Form.Item>

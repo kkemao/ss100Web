@@ -19,6 +19,7 @@ import Label from "../../src/secPage/label";
 import Question from "../../src/secPage/question";
 import Article from "../../src/secPage/article";
 import moment from "moment";
+import { imageAddPrefix } from "../utils";
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
@@ -103,13 +104,21 @@ function Home(props: Props) {
       url: "/home/setting",
     },
   ];
-
   return (
     <Layout style={{ height: "100%" }}>
       <Header className="header custom-style">
         <div className="logo">数商100 - 后台管理系统</div>
         <div className="user-box">
           <span style={{ fontSize: 14, marginRight: 15 }}>{date}</span>
+          <img
+            className="user-avatar"
+            alt=""
+            src={
+              userInfo.image
+                ? imageAddPrefix(userInfo.image || "")
+                : `${process.env.PUBLIC_URL}/user.png`
+            }
+          />
           <Dropdown
             overlay={
               <Menu>
@@ -130,6 +139,7 @@ function Home(props: Props) {
           >
             <a
               className="ant-dropdown-link"
+              style={{ color: "#b3c0cb" }}
               onClick={(e) => e.preventDefault()}
             >
               {userInfo.username || "--"} <DownOutlined />

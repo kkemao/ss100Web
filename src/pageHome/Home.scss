@@ -4,11 +4,30 @@
   justify-content: space-between;
   padding: 0 25px;
   .logo {
-    color: white;
-    font-size: 24px;
+    color: #000;
+    font-size: 22px;
+    text-shadow: 1px 1px 0 #fff, 1px 1px 0 #444,
+      /* end of 2 level deep grey shadow */ 2px 1px 0 #444, 2px 2px 0 #444,
+      3px 2px 0 #444, 3px 3px 0 #444;
+    letter-spacing: 1px;
+    transform: scale(1.2, 1);
+    transform-origin: left;
   }
   .user-box {
     color: white;
     font-size: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: center;
+    .user-avatar {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      margin-right: 5px;
+      position: relative;
+      top: 7px;
+      object-fit: cover;
+    }
   }
 }

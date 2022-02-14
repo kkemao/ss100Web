@@ -23,13 +23,17 @@ function Dashboard(props: Props) {
     getAllCount();
   }, []);
   const getAllCount = async () => {
-    const res = await BaseApi.getAllCount();
-    console.log("zkf", res);
-    if (res?.data) {
-      setUser(res.data.user);
-      setArticle(res.data.article);
-      setQuestion(res.data.question);
-      setLabel(res.data.label);
+    try {
+      const res = await BaseApi.getAllCount();
+      console.log("zkf", res);
+      if (res?.data) {
+        setUser(res.data.user);
+        setArticle(res.data.article);
+        setQuestion(res.data.question);
+        setLabel(res.data.label);
+      }
+    } catch (error) {
+      message.error(error.message);
     }
   };
   return (
