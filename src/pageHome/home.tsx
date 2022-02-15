@@ -60,48 +60,63 @@ function Home(props: Props) {
       icon: <BankOutlined />,
       text: "首页",
       url: "/home/dashboard",
+      children: [],
     },
     {
-      key: "user",
+      key: "wechatuser",
       icon: <UserOutlined />,
       text: "用户管理",
       url: "/home/user",
+      children: [],
     },
     {
       key: "label",
       icon: <TagsOutlined />,
       text: "标签管理",
       url: "/home/label",
+      children: [],
     },
     {
       key: "question",
       icon: <CopyOutlined />,
       text: "试题管理",
       url: "/home/question",
+      children: [],
     },
     {
       key: "article",
       icon: <FileWordOutlined />,
       text: "文章管理",
       url: "/home/article",
+      children: [],
     },
     {
       key: "order",
       icon: <PayCircleOutlined />,
       text: "订单管理",
       url: "/home/order",
+      children: [],
     },
     {
       key: "test",
       icon: <CalculatorOutlined />,
       text: "测评管理",
       url: "/home/test",
+      children: [],
     },
     {
       key: "setting",
       icon: <SettingOutlined />,
       text: "系统设置",
       url: "/home/setting",
+      children: [
+        {
+          key: "user",
+          icon: <UserOutlined />,
+          text: "用户管理",
+          url: "/home/user",
+        },
+      ],
     },
   ];
   return (
@@ -159,7 +174,21 @@ function Home(props: Props) {
             style={{ height: "100%", borderRight: 0 }}
           >
             {menuList.map((menu) => {
-              return (
+              return menu.children?.length ? (
+                <SubMenu key={menu.key} icon={menu.icon} title={menu.text}>
+                  {menu.children.map((_i) => {
+                    return (
+                      <Menu.Item
+                        key={_i.key}
+                        icon={_i.icon}
+                        onClick={() => gotoPage(_i.url)}
+                      >
+                        {_i.text}
+                      </Menu.Item>
+                    );
+                  })}
+                </SubMenu>
+              ) : (
                 <Menu.Item
                   key={menu.key}
                   icon={menu.icon}

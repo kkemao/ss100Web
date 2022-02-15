@@ -38,6 +38,21 @@ class BaseApiClass {
       .get<IDataResType<any>>("/api/user/find-all")
       .then((res) => res.data);
   };
+  deleteUser = (id: number) => {
+    return request
+      .get<IListResType<IFLabel>>(`/api/user/delete?id=${id}`)
+      .then((res) => res.data);
+  };
+  addUser = (payload: any) => {
+    return request
+      .post<IDataResType<any>>("api/user/add", payload)
+      .then((res) => res.data);
+  };
+  updateUser = (payload: any) => {
+    return request
+      .post<IDataResType<any>>("api/user/update", payload)
+      .then((res) => res.data);
+  };
   getLabelList = () => {
     return request
       .get<IListResType<IFLabel>>("/api/label/all")

@@ -13,7 +13,7 @@ import {
 } from "antd";
 import { BaseApi } from "../../requests/base-api";
 import { showArticleModal, ModeType } from "./add";
-import { SearchOutlined } from "@ant-design/icons";
+import { SearchOutlined, PlusOutlined } from "@ant-design/icons";
 import Card from "./component/card";
 import { imageAddPrefix } from "../../utils";
 const { Option } = Select;
@@ -238,6 +238,7 @@ function Article(props: Props) {
           <Button
             type="primary"
             size="small"
+            icon={<PlusOutlined />}
             onClick={() =>
               addOrEditArticleFun({
                 mode: ModeType.CREATE,

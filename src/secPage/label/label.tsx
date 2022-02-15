@@ -13,6 +13,7 @@ import {
 } from "antd";
 import { BaseApi } from "../../requests/base-api";
 import { showLabelModal, ModeType } from "./addLabel";
+import { PlusOutlined } from "@ant-design/icons";
 
 const { Panel } = Collapse;
 
@@ -76,8 +77,9 @@ function Label(props: Props) {
         <span className="sec-header-title">标签管理</span>
         <div>
           <Button
-            type="primary"
+            type="link"
             size="small"
+            icon={<PlusOutlined />}
             onClick={() =>
               addOrEditLabelFun({
                 mode: ModeType.CREATE,
@@ -87,9 +89,9 @@ function Label(props: Props) {
           >
             添加类别
           </Button>
-          <Button size="small" type="link">
+          {/* <Button size="small" type="link">
             批量导入
-          </Button>
+          </Button> */}
         </div>
       </div>
       <div className="secpage-content">

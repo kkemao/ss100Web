@@ -17,7 +17,7 @@ import {
 import { BaseApi } from "../../requests/base-api";
 import { showQuestionModal, ModeType } from "./addQuestion";
 import { EQuestionType } from "../../types";
-import { SearchOutlined } from "@ant-design/icons";
+import { SearchOutlined, PlusOutlined } from "@ant-design/icons";
 const { Option } = Select;
 
 interface Props {
@@ -341,6 +341,7 @@ function Question(props: Props) {
           <Button
             type="primary"
             size="small"
+            icon={<PlusOutlined />}
             onClick={() =>
               addOrEditQuestionFun({
                 mode: ModeType.CREATE,
