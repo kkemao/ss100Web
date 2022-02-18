@@ -3,6 +3,9 @@ import * as H from "history";
 import { Layout, Menu, Dropdown, message } from "antd";
 import {
   UserOutlined,
+  WechatOutlined,
+  CommentOutlined,
+  ShoppingOutlined,
   SettingOutlined,
   CopyOutlined,
   BankOutlined,
@@ -64,8 +67,8 @@ function Home(props: Props) {
     },
     {
       key: "wechatuser",
-      icon: <UserOutlined />,
-      text: "用户管理",
+      icon: <WechatOutlined />,
+      text: "小程序用户",
       url: "/home/user",
       children: [],
     },
@@ -114,6 +117,12 @@ function Home(props: Props) {
           key: "user",
           icon: <UserOutlined />,
           text: "用户管理",
+          url: "/home/user",
+        },
+        {
+          key: "changepassword",
+          icon: <ShoppingOutlined />,
+          text: "修改密码",
           url: "/home/user",
         },
       ],

@@ -331,7 +331,9 @@ function Article(props: Props) {
             </div>
           </div>
           <div className="label-box">
-            {currentInfo.auth ? <span className="label-tag">原创</span> : ""}
+            <span className="label-tag">
+              {currentInfo.auth ? "原创" : "转载"}
+            </span>
             <span style={{ margin: "0 10px" }}>{currentInfo.create_time}</span>
             <span className="label-content">
               {labelObject[currentInfo.parent_id]?.name}
