@@ -79,6 +79,7 @@ function Label(props: Props) {
           <Button
             type="link"
             size="small"
+            disabled={labelList.length >= 5}
             icon={<PlusOutlined />}
             onClick={() =>
               addOrEditLabelFun({
