@@ -46,7 +46,7 @@ function Dashboard(props: Props) {
           </div>
           <div className="box">
             <span className="title">{user}</span>
-            <span>系统用户数</span>
+            <span>微信用户数</span>
           </div>
         </div>
         <div className="section" style={{ background: "#ffd344" }}>

@@ -33,6 +33,26 @@ class BaseApiClass {
       .post<IDataResType<any>>("/api/login", payload)
       .then((res) => res.data);
   };
+  getWechatUserList = () => {
+    return request
+      .get<IDataResType<any>>("/api/wechatuser/find-all")
+      .then((res) => res.data);
+  };
+  deleteWechatUser = (id: number) => {
+    return request
+      .get<IListResType<IFLabel>>(`/api/wechatuser/delete?id=${id}`)
+      .then((res) => res.data);
+  };
+  addWechatUser = (payload: any) => {
+    return request
+      .post<IDataResType<any>>("api/wechatuser/add", payload)
+      .then((res) => res.data);
+  };
+  updateWechatUser = (payload: any) => {
+    return request
+      .post<IDataResType<any>>("api/wechatuser/update", payload)
+      .then((res) => res.data);
+  };
   getUserList = () => {
     return request
       .get<IDataResType<any>>("/api/user/find-all")

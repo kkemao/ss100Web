@@ -17,6 +17,7 @@ import {
 } from "@ant-design/icons";
 import { Route } from "react-router-dom";
 import Dashboard from "../../src/secPage/dashboard";
+import WechatUser from "../../src/secPage/wechatuser";
 import User from "../../src/secPage/user";
 import Label from "../../src/secPage/label";
 import Question from "../../src/secPage/question";
@@ -69,7 +70,7 @@ function Home(props: Props) {
       key: "wechatuser",
       icon: <WechatOutlined />,
       text: "小程序用户",
-      url: "/home/user",
+      url: "/home/wechatuser",
       children: [],
     },
     {
@@ -128,6 +129,7 @@ function Home(props: Props) {
       ],
     },
   ];
+  console.log("zkf", history.location.pathname);
   return (
     <Layout style={{ height: "100%" }}>
       <Header className="header custom-style">
@@ -176,7 +178,7 @@ function Home(props: Props) {
         <Sider width={200} className="site-layout-background">
           <Menu
             mode="inline"
-            defaultSelectedKeys={menuList
+            selectedKeys={menuList
               .filter((menu) => menu.url === history.location.pathname)
               .map((menu) => menu.key)}
             // defaultOpenKeys={["sub1"]}
@@ -220,6 +222,7 @@ function Home(props: Props) {
             }}
           >
             <Route path={"/home/dashboard"} component={Dashboard}></Route>
+            <Route path={"/home/WechatUser"} component={WechatUser}></Route>
             <Route path={"/home/user"} component={User}></Route>
             <Route path={"/home/label"} component={Label}></Route>
             <Route path={"/home/question"} component={Question}></Route>

@@ -79,7 +79,9 @@ function Article(props: Props) {
     setCurrentId(info.id);
     setCurrentInfo(info);
     try {
-      const arr = JSON.parse(info.content);
+      const arr = JSON.parse(
+        info.content.replace(/\n/g, "\\n").replace(/\r/g, "\\r")
+      );
       setCurrentInfoContent(arr);
     } catch (error) {
       setCurrentInfoContent([{ type: 2, content: error.message }]);
@@ -332,7 +334,7 @@ function Article(props: Props) {
           </div>
           <div className="label-box">
             <span className="label-tag">
-              {currentInfo.auth ? "原创" : "转载"}
+              {currentInfo.auth ? currentInfo.auth : "转载"}
             </span>
             <span style={{ margin: "0 10px" }}>{currentInfo.create_time}</span>
             <span className="label-content">
@@ -342,10 +344,11 @@ function Article(props: Props) {
             <span className="label-content">
               {labelObject[currentInfo.label_id]?.name}
             </span>
-            <span
-              style={{ marginLeft: 15, fontWeight: "normal", color: "gray" }}
-            >
+            {/* <span style={{ marginLeft: 10, fontWeight: "bold", color: "#333" }}>
               作者：{currentInfo.auth}
+            </span> */}
+            <span className="label-content" style={{ marginLeft: 15 }}>
+              阅读量：{currentInfo.count || 0}
             </span>
           </div>
           <div className="info-wrap">
@@ -360,7 +363,9 @@ function Article(props: Props) {
                         className="info-section-img"
                       />
                     ) : (
-                      <p className="text-box">{item.content}</p>
+                      item.content
+                        .split("||||")
+                        .map((item: any) => <p className="text-box">{item}</p>)
                     )}
                   </p>
                 );

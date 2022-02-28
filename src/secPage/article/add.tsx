@@ -54,7 +54,9 @@ function AddArticle({
     if (mode === ModeType.MODIFY) {
       const _info = {
         ...articleInfo,
-        content: JSON.parse(articleInfo.content),
+        content: JSON.parse(
+          articleInfo.content.replace(/\n/g, "\\n").replace(/\r/g, "\\r")
+        ),
       };
       formRef.current!.setFieldsValue(_info);
       setInfo(_info);
