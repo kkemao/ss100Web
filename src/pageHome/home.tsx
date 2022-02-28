@@ -129,7 +129,7 @@ function Home(props: Props) {
       ],
     },
   ];
-  console.log("zkf", history.location.pathname);
+
   return (
     <Layout style={{ height: "100%" }}>
       <Header className="header custom-style">
