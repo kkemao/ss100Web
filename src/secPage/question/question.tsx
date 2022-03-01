@@ -166,6 +166,10 @@ function Question(props: Props) {
       title: "来源",
       key: "origin",
       dataIndex: "origin",
+      render: (text: any, record: any) => {
+        console.log("zkf", typeof text, text);
+        return text || "-";
+      },
     },
     {
       title: "解释",

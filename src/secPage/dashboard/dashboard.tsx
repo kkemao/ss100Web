@@ -7,6 +7,7 @@ import {
   TeamOutlined,
   TagsOutlined,
   ReadOutlined,
+  LikeOutlined,
 } from "@ant-design/icons";
 
 interface Props {
@@ -15,6 +16,7 @@ interface Props {
 function Dashboard(props: Props) {
   const { history } = props;
   const [article, setArticle] = useState(0);
+  const [articleCount, setArticleCount] = useState(0);
   const [label, setLabel] = useState(0);
   const [question, setQuestion] = useState(0);
   const [user, setUser] = useState(0);
@@ -25,10 +27,10 @@ function Dashboard(props: Props) {
   const getAllCount = async () => {
     try {
       const res = await BaseApi.getAllCount();
-      console.log("zkf", res);
       if (res?.data) {
         setUser(res.data.user);
         setArticle(res.data.article);
+        setArticleCount(res.data.articleCount);
         setQuestion(res.data.question);
         setLabel(res.data.label);
       }
@@ -58,13 +60,22 @@ function Dashboard(props: Props) {
             <span>总试题数</span>
           </div>
         </div>
-        <div className="section" style={{ background: "#648cff" }}>
+        <div className="section" style={{ background: "#e77ab6" }}>
           <div>
             <ReadOutlined style={{ fontSize: 36 }} />
           </div>
           <div className="box">
             <span className="title">{article}</span>
             <span>总文章数</span>
+          </div>
+        </div>
+        <div className="section" style={{ background: "#648cff" }}>
+          <div>
+            <LikeOutlined style={{ fontSize: 36 }} />
+          </div>
+          <div className="box">
+            <span className="title">{articleCount}</span>
+            <span>文章点击数</span>
           </div>
         </div>
         <div className="section" style={{ background: "#4fcbb0" }}>

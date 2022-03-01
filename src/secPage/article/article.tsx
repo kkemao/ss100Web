@@ -352,6 +352,7 @@ function Article(props: Props) {
             </span>
           </div>
           <div className="info-wrap">
+            <p className="info-sketch">{currentInfo.sketch}</p>
             {currentInfo &&
               currentInfoContent.map((item: any) => {
                 return (

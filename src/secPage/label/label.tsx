@@ -139,7 +139,7 @@ function Label(props: Props) {
                       >
                         编辑
                       </Button>
-                      <Popconfirm
+                      {/* <Popconfirm
                         title="是否删除?"
                         onConfirm={() => deleteLabel(label.id)}
                         onCancel={() => {}}
@@ -149,7 +149,7 @@ function Label(props: Props) {
                         <Button type="link" size="small" danger>
                           删除
                         </Button>
-                      </Popconfirm>
+                      </Popconfirm> */}
                     </span>
                   </h5>
                 }

@@ -120,12 +120,12 @@ function Home(props: Props) {
           text: "用户管理",
           url: "/home/user",
         },
-        {
-          key: "changepassword",
-          icon: <ShoppingOutlined />,
-          text: "修改密码",
-          url: "/home/user",
-        },
+        // {
+        //   key: "changepassword",
+        //   icon: <ShoppingOutlined />,
+        //   text: "修改密码",
+        //   url: "/home/user",
+        // },
       ],
     },
   ];
