@@ -18,6 +18,7 @@ import { BaseApi } from "../../requests/base-api";
 import { showQuestionModal, ModeType } from "./addQuestion";
 import { EQuestionType } from "../../types";
 import { SearchOutlined, PlusOutlined } from "@ant-design/icons";
+import { showBatchImport, ModeType as MT } from "../batchImport/import";
 const { Option } = Select;
 
 interface Props {
@@ -355,7 +356,22 @@ function Question(props: Props) {
           >
             添加试题
           </Button>
-          <Upload
+          <Button
+            size="small"
+            type="link"
+            onClick={() => {
+              const instance = showBatchImport({
+                mode: MT.QEUSTION,
+                onClose: () => {
+                  instance.destory();
+                },
+                refresh: () => getallQuestion(),
+              });
+            }}
+          >
+            批量导入
+          </Button>
+          {/* <Upload
             name="logo"
             listType="picture"
             beforeUpload={(file) => {
@@ -366,7 +382,7 @@ function Question(props: Props) {
             <Button size="small" type="link">
               批量导入
             </Button>
-          </Upload>
+          </Upload> */}
         </div>
       </div>
       <div className="secpage-content">

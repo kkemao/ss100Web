@@ -15,6 +15,7 @@ import { BaseApi } from "../../requests/base-api";
 import { showArticleModal, ModeType } from "./add";
 import { SearchOutlined, PlusOutlined } from "@ant-design/icons";
 import Card from "./component/card";
+import { showBatchImport, ModeType as MT } from "../batchImport/import";
 import { imageAddPrefix } from "../../utils";
 const { Option } = Select;
 
@@ -250,7 +251,26 @@ function Article(props: Props) {
           >
             添加文章
           </Button>
-          <Upload
+          <Button
+            size="small"
+            type="link"
+            onClick={() => {
+              // showBatchImport({
+              //   mode: MT.ARTICLE,
+
+              // })
+              const instance = showBatchImport({
+                mode: MT.ARTICLE,
+                onClose: () => {
+                  instance.destory();
+                },
+                refresh: () => getallArticle(),
+              });
+            }}
+          >
+            批量导入
+          </Button>
+          {/* <Upload
             name="logo"
             listType="picture"
             beforeUpload={(file) => {
@@ -261,7 +281,7 @@ function Article(props: Props) {
             <Button size="small" type="link">
               批量导入
             </Button>
-          </Upload>
+          </Upload> */}
         </div>
       </div>
       <div className="secpage-content">

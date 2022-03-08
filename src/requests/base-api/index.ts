@@ -145,6 +145,13 @@ class BaseApiClass {
       })
       .then((res) => res.data);
   };
+  uploadImages = (formdata: any) => {
+    return request
+      .post<IUploadType>(`/api/file/images`, formdata, {
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+      .then((res) => res.data);
+  };
   questionImport = (formdata: any) => {
     return request
       .post<IUploadType>(`/api/file/import`, formdata, {
